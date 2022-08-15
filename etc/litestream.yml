@@ -1,0 +1,10 @@
+dbs:
+  - path: /directus/database/database.sqlite
+    replicas:
+      - type: s3
+        bucket: ${STORAGE_S3_BUCKET}
+        path: ${STORAGE_S3_DB}
+        endpoint: ${STORAGE_S3_ENDPOINT}
+        region: ${STORAGE_S3_REGION}
+        access-key-id: ${STORAGE_S3_KEY}
+        secret-access-key: ${STORAGE_S3_SECRET}
