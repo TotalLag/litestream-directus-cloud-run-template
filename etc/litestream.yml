@@ -8,3 +8,4 @@ dbs:
         region: ${STORAGE_S3_REGION}
         access-key-id: ${STORAGE_S3_KEY}
         secret-access-key: ${STORAGE_S3_SECRET}
+        snapshot-interval: 1h

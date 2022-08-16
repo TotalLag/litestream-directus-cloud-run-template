@@ -6,7 +6,7 @@ if [ -f /directus/database/database.sqlite ]; then
 	echo "Database already exists, skipping restore"
 else
 	echo "No database found, restoring from replica if exists"
-	litestream restore -v -if-replica-exists -o /directus/database/database.sqlite "/directus/database/database.sqlite"
+	litestream restore -v -parallelism 64 -if-replica-exists -o /directus/database/database.sqlite "/directus/database/database.sqlite"
 fi
 
 npx directus bootstrap &&
