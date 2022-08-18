@@ -37,28 +37,13 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        key: ${{ runner.os }}-buildx-v2-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-buildx-
+          ${{ runner.os }}-buildx-v2-
             name: Build
-
-    - name: Login to Artifact Registry
-      uses: docker/login-action@v1
-      with:
-        registry: us-central1-docker.pkg.dev
-        username: _json_key
-        password: ${{ secrets.GOOGLE_DOCKER }}
-
-    - name: Get tag
-      id: get-tag
-      run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
 
     - uses: docker/build-push-action@v3
       with:
-        push: true
-        secrets: |
-          "KEY=${{ secrets.KEY }}"
-          "SECRET=${{ secrets.SECRET }}"
+        push: false
         tags: |
-             us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test/web-cms:${{ steps.get-tag.outputs.short_ref }}
-             us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test/web-cms:latest
+             ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT_ID }}/${{ secrets.GOOGLE_REPOSITORY }}/${{ secrets.GOOGLE_IMAGE }}:test
