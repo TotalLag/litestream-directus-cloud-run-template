@@ -16,16 +16,22 @@ jobs:
 
     if: github.event.workflow_run.conclusion == 'success'
     steps:
+    - uses: actions/checkout@v3
+
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GOOGLE_CLOUDRUN }}'
 
+    - name: Get tag
+      id: get-tag
+      run: echo ::set-output name=sha_short::$(git rev-parse --short HEAD)
+
     - name: 'Deploy to Cloud Run'
       uses: 'google-github-actions/deploy-cloudrun@v0'
       with:
         service: ${{ secrets.GOOGLE_SERVICE }}
-        image: ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT_ID }}/${{ secrets.GOOGLE_REPOSITORY }}/${{ secrets.GOOGLE_IMAGE }}
+        image: ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT_ID }}/${{ secrets.GOOGLE_REPOSITORY }}/${{ secrets.GOOGLE_IMAGE }}:${{ steps.get-tag.outputs.sha_short }}
         env_vars: |
                 KEY=${{ secrets.KEY }}
                 SECRET=${{ secrets.SECRET }}
