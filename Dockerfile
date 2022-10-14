@@ -17,7 +17,7 @@ COPY --from=builder /usr/local/bin/litestream /usr/local/bin/litestream
 EXPOSE 8055
 
 # Copy Litestream configuration file & startup script.
-COPY etc/litestream.yml /etc/litestream.yml
+COPY etc/litestream.yml etc/snapshot.yml* /etc/
 COPY scripts/run.sh /scripts/run.sh
 
 # CMD npx directus bootstrap && npx directus start

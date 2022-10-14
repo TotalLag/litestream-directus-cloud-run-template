@@ -1,0 +1,57 @@
+name: Backup Schema
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }} 
+  cancel-in-progress: true
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: 'main'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - uses: docker/build-push-action@v3
+      with:
+        push: false
+        load: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        tags: image:main
+
+    - name: Run the build process with Docker
+      uses: addnab/docker-run-action@v3
+      with:
+        image: image:main
+        options: |
+          -v directus:/directus
+          -e KEY=${{ secrets.KEY }}
+          -e SECRET=${{ secrets.SECRET }}
+          -e STORAGE_S3_DRIVER=${{ secrets.STORAGE_S3_DRIVER }}
+          -e STORAGE_S3_KEY=${{ secrets.STORAGE_S3_KEY }}
+          -e STORAGE_S3_SECRET=${{ secrets.STORAGE_S3_SECRET }}
+          -e STORAGE_S3_BUCKET=${{ secrets.STORAGE_S3_BUCKET }}
+          -e STORAGE_S3_REGION=${{ secrets.STORAGE_S3_REGION }}
+          -e STORAGE_S3_ENDPOINT=${{ secrets.STORAGE_S3_ENDPOINT }}
+          -e STORAGE_S3_ROOT=${{ secrets.STORAGE_USER }}/uploads
+          -e STORAGE_S3_DB=${{ secrets.STORAGE_USER }}/db
+        run: |
+          litestream restore -v -parallelism 64 -if-replica-exists -o /directus/database/database.sqlite "/directus/database/database.sqlite"
+          npx directus schema snapshot --yes ./snapshot.yml
+
+    - run: sudo cp /var/lib/docker/volumes/directus/_data/snapshot.yml ./etc
+    - if: github.ref == 'refs/heads/main'
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: '**/snapshot.yml'

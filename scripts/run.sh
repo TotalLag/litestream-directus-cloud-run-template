@@ -11,5 +11,9 @@ fi
 
 npx directus bootstrap &&
 
+if [ -f /etc/snapshot.yml ]; then
+	npx directus schema apply --yes /etc/snapshot.yml
+fi
+
 # Run litestream with your app as the subprocess.
 exec litestream replicate -exec "npx directus start"
