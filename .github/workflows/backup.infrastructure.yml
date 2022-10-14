@@ -11,7 +11,7 @@ env:
   DOCKER_BUILDKIT: 1
 
 jobs:
-  tests:
+  backup:
     runs-on: ubuntu-latest
 
     steps:
