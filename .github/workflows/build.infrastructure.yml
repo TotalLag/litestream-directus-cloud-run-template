@@ -2,7 +2,7 @@ name: Infrastructure - build
 
 on:
   workflow_run:
-    workflows: ["tests"]
+    workflows: ["Infrastructure - tests"]
     types:
       - completed
 
