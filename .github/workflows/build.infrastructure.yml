@@ -1,4 +1,4 @@
-name: build
+name: Infrastructure - build
 
 on:
   workflow_run:

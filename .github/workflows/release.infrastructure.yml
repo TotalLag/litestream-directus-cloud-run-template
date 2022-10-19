@@ -1,6 +1,7 @@
-name: release
+name: Infrastructure - release
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["build"]
     types:
@@ -31,7 +32,7 @@ jobs:
         uses: "google-github-actions/deploy-cloudrun@v0"
         with:
           service: ${{ secrets.GOOGLE_SERVICE }}
-          image: ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT_ID }}/${{ secrets.GOOGLE_REPOSITORY }}/${{ secrets.GOOGLE_IMAGE }}:${{ steps.get-tag.outputs.sha_short }}
+          image: ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT_ID }}/${{ secrets.GOOGLE_REPOSITORY }}/${{ secrets.GOOGLE_IMAGE }}:latest
           env_vars: |
             KEY=${{ secrets.KEY }}
             SECRET=${{ secrets.SECRET }}

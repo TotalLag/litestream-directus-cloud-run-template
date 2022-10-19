@@ -1,4 +1,4 @@
-name: tests
+name: Infrastructure - tests
 
 on:
   push:
