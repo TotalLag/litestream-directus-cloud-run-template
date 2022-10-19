@@ -43,5 +43,5 @@ jobs:
             STORAGE_S3_BUCKET=${{ secrets.STORAGE_S3_BUCKET }}
             STORAGE_S3_REGION=${{ secrets.STORAGE_S3_REGION }}
             STORAGE_S3_ENDPOINT=${{ secrets.STORAGE_S3_ENDPOINT }}
-            STORAGE_S3_ROOT=${{ secrets.STORAGE_USER }}/uploads
-            STORAGE_S3_DB=${{ secrets.STORAGE_USER }}/db
+            STORAGE_S3_ROOT=uploads
+            STORAGE_S3_DB=db
