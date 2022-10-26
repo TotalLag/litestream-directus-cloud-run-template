@@ -21,8 +21,8 @@ if [[ -z "${SNAPSHOT_URL}" ]]; then
 else
 
   echo "Snapshot URL found, attempting to download and apply..."
-  wget "${SNAPSHOT_URL}"
-  npx directus schema apply --yes snapshot.yml
+  wget -O /etc/snapshot.yml "${SNAPSHOT_URL}"
+  npx directus schema apply --yes /etc/snapshot.yml
 
 fi
 
