@@ -11,6 +11,8 @@ fi
 
 npx directus bootstrap &&
 
+ls -alh .
+
 if [[ -z "${SNAPSHOT_URL}" ]]; then
 
   if [ -f /etc/snapshot.yml ]; then
