@@ -11,8 +11,17 @@ fi
 
 npx directus bootstrap &&
 
-if [ -f /etc/snapshot.yml ]; then
-	npx directus schema apply --yes /etc/snapshot.yml
+if [[ -z "${SNAPSHOT_URL}" ]]; then
+  
+	if [ -f /etc/snapshot.yml ]; then
+		npx directus schema apply --yes /etc/snapshot.yml
+	fi
+
+else
+
+	curl "${SNAPSHOT_URL}"
+  npx directus schema apply --yes snapshot.yml
+
 fi
 
 # Run litestream with your app as the subprocess.
