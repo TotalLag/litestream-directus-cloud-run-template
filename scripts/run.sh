@@ -11,7 +11,7 @@ fi
 
 npx directus bootstrap
 
-if [[ -z "${SNAPSHOT_URL}" ] || [ ! -f ./snapshot.yml ]]; then
+if [ -z "${SNAPSHOT_URL}" ] || [ ! -f ./snapshot.yml ]; then
 
   if [ -f /etc/snapshot.yml ]; then
     echo "Snapshot file found on disk, attempting to apply..."
