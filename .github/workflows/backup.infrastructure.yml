@@ -57,3 +57,4 @@ jobs:
           file_pattern: "**/snapshot.yml"
           create_branch: true
           branch: directus-snapshot
+          push_options: "--force"
