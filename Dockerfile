@@ -20,5 +20,7 @@ EXPOSE 8055
 COPY etc/litestream.yml etc/snapshot.yml* /etc/
 COPY scripts/run.sh /scripts/run.sh
 
+RUN chmod a+rwx -R etc/
+
 # CMD npx directus bootstrap && npx directus start
 CMD [ "/bin/sh", "/scripts/run.sh" ]
